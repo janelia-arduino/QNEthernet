@@ -136,6 +136,19 @@ class MDNSClass final {
 
  private:
   struct Service final {
+#if __cplusplus < 201402L
+    Service() = default;
+    Service(bool valid, const char *name, const char *type,
+            enum mdns_sd_proto proto, uint16_t port,
+            std::vector<String> (*getTXTFunc)(void))
+        : valid(valid),
+          name{name},
+          type{type},
+          proto{proto},
+          port(port),
+          getTXTFunc(getTXTFunc) {}
+#endif  // __cplusplus < 201402L
+
     // Compares this object to another. This doesn't compare the functions.
     bool operator==(const Service &other) const;
 
